@@ -68,6 +68,32 @@ app.get('/landing', (req, res) => {
   })
 })
 
+// Blogpagina
+app.get('/blog', async (req, res) => {
+  try {
+    const blogFile = await fsPromises.readFile('./data/data.json', 'utf-8')
+    const blogData = JSON.parse(blogFile)
+    const reversedPosts = [...blogData.data].reverse()
+    const favoritesPath = './data/favorites.json'
+    let favorites = []
+    if (fs.existsSync(favoritesPath)) {
+      favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
+    }
+    const favoriteIds = favorites.map(f => f.id)
+
+    res.render('partials/layout', {
+      title: 'Blog',
+      includeContent: 'partials/blog-content',
+      posts: reversedPosts,
+      favoriteIds,
+      bodyClass: 'blog-page'
+    })
+  } catch (err) {
+    console.error('Fout bij laden blog data:', err)
+    res.status(500).send('Interne serverfout bij laden blog')
+  }
+})
+
 app.set('port', process.env.PORT || 2001)
 app.listen(app.get('port'), () => {
   console.log(`Server started on http://localhost:${app.get('port')}`)
