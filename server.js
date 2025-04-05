@@ -150,6 +150,27 @@ app.post('/favorites', async (req, res) => {
   }
 })
 
+app.post('/favorites/remove', async (req, res) => {
+  try {
+    const { id } = req.body
+    const favoritesPath = './data/favorites.json'
+
+    if (!fs.existsSync(favoritesPath)) {
+      return res.status(404).json({ error: 'Favorietenlijst bestaat niet' })
+    }
+
+    const favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
+    const updatedFavorites = favorites.filter(post => post.id !== id)
+
+    await fsPromises.writeFile(favoritesPath, JSON.stringify(updatedFavorites, null, 2))
+
+    res.status(200).json({ message: 'Verwijderd uit favorieten' })
+  } catch (err) {
+    console.error("Fout bij verwijderen favoriet:", err)
+    res.status(500).json({ error: 'Serverfout' })
+  }
+})
+
 app.set('port', process.env.PORT || 2001)
 app.listen(app.get('port'), () => {
   console.log(`Server started on http://localhost:${app.get('port')}`)
