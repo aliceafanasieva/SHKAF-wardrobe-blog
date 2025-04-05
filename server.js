@@ -120,6 +120,36 @@ app.get('/favorites', async (req, res) => {
   }
 })
 
+// Favorites pagina POST 
+app.post('/favorites', async (req, res) => {
+  try {
+    const favoritesPath = './data/favorites.json'
+    const { id } = req.body
+
+    const blogFile = await fsPromises.readFile('./data/data.json', 'utf-8')
+    const blogData = JSON.parse(blogFile)
+    const post = blogData.data.find(p => p.id === id)
+
+    if (!post) return res.status(404).json({ error: 'Post not found' })
+
+    let favorites = []
+    if (fs.existsSync(favoritesPath)) {
+      favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
+    }
+    
+    const alreadyExists = favorites.some(f => f.id === id)
+    if (!alreadyExists) {
+      favorites.push(post)
+      await fsPromises.writeFile(favoritesPath, JSON.stringify(favorites, null, 2))
+    }
+
+    res.status(200).json({ message: 'Toegevoegd aan favorieten' })
+  } catch (err) {
+    console.error("Fout bij opslaan favoriet:", err)
+    res.status(500).json({ error: 'Serverfout' })
+  }
+})
+
 app.set('port', process.env.PORT || 2001)
 app.listen(app.get('port'), () => {
   console.log(`Server started on http://localhost:${app.get('port')}`)
