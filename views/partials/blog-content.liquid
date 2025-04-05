@@ -1,0 +1,40 @@
+<section class="categories-container">
+  <div class="blog-categories">
+    <p>Categories</p>
+    <ul class="categories-list">
+      <li><button data-filter="all">All</button></li>
+      <li><button data-filter="clothes">clothes</button></li>
+      <li><button data-filter="runway">runway</button></li>
+      <li><button data-filter="outerwear">outerwear</button></li>
+      <li><button data-filter="accessories">accessories</button></li>
+      <li><button data-filter="shoes">shoes</button></li>
+    </ul>
+  </div>
+</section>
+
+<section class="blog-posts">
+  {% for post in posts %}
+    <article class="blog-post-card" data-category="{{ post.category }}">
+      <img class="post-image" src="{{ post['image-1'] }}" alt="{{ post.title }}" width="48" height="48">
+
+      <section class="post-content">
+        <div class="post-content-left">
+          <h3 class="post-title">{{ post.title | upcase }}</h3>
+          <p class="hashtag">#{{ post.category }}</p>
+        </div>
+
+        <div class="post-content-right">
+          <button class="favorite-btn" data-id="{{ post.id }}">
+            <img
+              src="/assets/icons/{% if favoriteIds contains post.id %}heart-full.svg{% else %}heart-empty.svg{% endif %}"
+              alt="Like button"
+              width="48"
+              height="48"
+            >
+          </button>
+          <a href="/{{ post.slug }}" class="read-more">read more</a>
+        </div>
+      </section>
+    </article>
+  {% endfor %}
+</section>
