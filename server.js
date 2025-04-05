@@ -58,6 +58,16 @@ app.post('/login', async (req, res) => {
   }
 })
 
+// Landingspagina GET
+app.get('/landing', (req, res) => {
+  const name = req.query.name || 'guest'
+  res.render('partials/layout', {
+    title: 'Landing',
+    includeContent: 'partials/landing-content',
+    name: name
+  })
+})
+
 app.set('port', process.env.PORT || 2001)
 app.listen(app.get('port'), () => {
   console.log(`Server started on http://localhost:${app.get('port')}`)
