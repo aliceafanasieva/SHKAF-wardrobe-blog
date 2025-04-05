@@ -94,6 +94,32 @@ app.get('/blog', async (req, res) => {
   }
 })
 
+// Favorites pagina GET
+app.get('/favorites', async (req, res) => {
+  try {
+    const favFile = await fsPromises.readFile('./data/favorites.json', 'utf-8')
+    const favData = JSON.parse(favFile)
+    const reversedFavorites = [...favData].reverse()
+    const favoritesPath = './data/favorites.json'
+    let favorites = []
+    if (fs.existsSync(favoritesPath)) {
+      favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
+    }
+    const favoriteIds = favorites.map(f => f.id)
+
+    res.render('partials/layout', {
+      title: 'Favorites',
+      includeContent: 'partials/favorites-content',
+      posts: reversedFavorites,
+      favoriteIds,
+      bodyClass: 'blog-page'
+    })
+  } catch (err) {
+    console.error('Fout bij laden favorites:', err)
+    res.status(500).send('Interne serverfout bij laden favorites')
+  }
+})
+
 app.set('port', process.env.PORT || 2001)
 app.listen(app.get('port'), () => {
   console.log(`Server started on http://localhost:${app.get('port')}`)
