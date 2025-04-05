@@ -1,0 +1,15 @@
+<main class="article-page">
+  <article class="article-detail">
+    <h1 class="article-title">{{ blog.title }}</h1>
+
+    <div class="article-images">
+      <img src="{{ blog['image-1'] }}" alt="{{ blog.title }} afbeelding 1" width="20" height="auto">
+      {% if blog['image-2'] %}
+        <img src="{{ blog['image-2'] }}" alt="{{ blog.title }} afbeelding 2" width="20" height="auto">
+      {% endif %}
+    </div>
+
+    <p class="article-category">#{{ blog.category }}</p>
+    <p class="article-content">{{ blog.content }}</p>
+  </article>
+</main>

@@ -34,7 +34,6 @@ app.get('/', (req, res) => {
   res.render('login', { title: 'Login' })
 })
 
-
 //Login pagina POST
 app.post('/login', async (req, res) => {
   try {
@@ -170,6 +169,31 @@ app.post('/favorites/remove', async (req, res) => {
     res.status(500).json({ error: 'Serverfout' })
   }
 })
+
+
+// Blogpost GET
+app.get('/:slug', async (req, res) => {
+  try {
+    const blogFile = await fsPromises.readFile('./data/data.json', 'utf-8')
+    const blogData = JSON.parse(blogFile)
+    const slug = req.params.slug
+    const blog = blogData.data.find(post => post.slug === slug)
+
+    if (blog) {
+      res.render('partials/layout', {
+        title: blog.title,
+        includeContent: 'partials/article-content',
+        blog: blog
+      })
+    } else {
+      res.status(404).send('Blog not found')
+    }
+  } catch (err) {
+    console.error('Fout bij laden blogpost:', err)
+    res.status(500).send('Interne serverfout bij laden post')
+  }
+})
+
 
 app.set('port', process.env.PORT || 2001)
 app.listen(app.get('port'), () => {
