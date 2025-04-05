@@ -28,19 +28,7 @@ The website is built using **Node.js**, **Express**, and the **Liquid** templati
 
 ## Structure
 
-wardrobe_blog/
-│
-├── data/                  # JSON data for blog posts, users, favorites
-├── public/
-│   ├── assets/            # fonts, images, icons, logo's
-│   ├── css/               
-│   └── js/                # client-side scripts (favorites.js, filter.js, etc.)
-├── views/
-│   ├── partials/          # page layout + content templates (Liquid)
-│   └── login.liquid       # login page
-├── server.js              # express server with routes
-├── package.json 
-└── README.md
+<img width="615" alt="image" src="https://github.com/user-attachments/assets/e1371f05-5a72-48d0-ba5a-d7c3c4f86b28" />
 
 ---
 
