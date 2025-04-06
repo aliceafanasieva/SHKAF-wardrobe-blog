@@ -423,6 +423,14 @@ body.blog-page .navigation-logo {
 
 /* ========== MEDIA QUERIES ========== */
 @media (min-width: 700px) {
+  .navigation-menu {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 6rem;
+    padding-right: 3rem;
+  }
+
   .mobile-menu-toggle {
     display: none;
   }
@@ -438,6 +446,7 @@ body.blog-page .navigation-logo {
     padding-right: 3rem;
     pointer-events: auto;
     transform: none;
+    transition: none;
   }
 
   .hero-title {
