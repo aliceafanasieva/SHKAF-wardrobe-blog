@@ -290,15 +290,16 @@ body.blog-page .navigation-logo {
 /* ========== BLOG PAGE ========== */
 .blog-posts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 2rem;
-  padding: 0 10rem 10rem;
+  padding: 2rem;
+  margin-top: 3rem;
 }
 
 .blog-post-card {
+  padding: 1rem 0;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
 }
 
 .post-image {
@@ -355,19 +356,17 @@ body.blog-page .navigation-logo {
 }
 
 .blog-categories {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 11rem;
-  gap: 1rem;
-  font-size: 14px;
-  font-weight: bold;
-  align-items: center;
-  text-transform: uppercase;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 2rem;
 }
 
 .categories-list {
-  gap: 2rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 12px;
 }
 
 .categories-list li {
@@ -497,6 +496,24 @@ body.blog-page .navigation-logo {
   .blog-posts {
     grid-template-columns: repeat(2, 1fr);
     padding: 2rem;
+  }
+
+  .blog-categories {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 11rem;
+    gap: 1rem;
+    font-size: 14px;
+    font-weight: bold;
+    align-items: center;
+    text-transform: uppercase;
+  }
+  
+  .categories-list {
+    gap: 2rem;
+    flex-direction: row;
   }
 
 }
