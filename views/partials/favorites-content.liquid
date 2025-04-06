@@ -1,29 +1,37 @@
 <main class="favorites-page">
   <h1 class="favorites-title">Your favorites</h1>
-  <section class="blog-posts">
-    {% for post in posts %}
-      <article class="blog-post-card" data-category="{{ post.category }}">
-        <img class="post-image" src="{{ post['image-1'] }}" alt="{{ post.title }}" width="48" height="48">
 
-        <section class="post-content">
-          <div class="post-content-left">
-            <h3 class="post-title">{{ post.title | upcase }}</h3>
-            <p class="hashtag">#{{ post.category }}</p>
-          </div>
+  {% if posts.size > 0 %}
+    <section class="blog-posts">
+      {% for post in posts %}
+        <article class="blog-post-card" data-category="{{ post.category }}">
+          <img class="post-image" src="{{ post['image-1'] }}" alt="{{ post.title }}" width="48" height="48">
 
-          <div class="post-content-right">
-            <button class="favorite-btn" data-id="{{ post.id }}">
-              <img
-                src="/assets/icons/{% if favoriteIds contains post.id %}heart-full.svg{% else %}heart-empty.svg{% endif %}"
-                alt="Like button"
-                width="48"
-                height="48"
-              >
-            </button>
-            <a href="/{{ post.slug }}" class="read-more">read more</a>
-          </div>
-        </section>
-      </article>
-    {% endfor %}
-  </section>
+          <section class="post-content">
+            <div class="post-content-left">
+              <h3 class="post-title">{{ post.title | upcase }}</h3>
+              <p class="hashtag">#{{ post.category }}</p>
+            </div>
+
+            <div class="post-content-right">
+              <button class="favorite-btn" data-id="{{ post.id }}">
+                <img
+                  src="/assets/icons/{% if favoriteIds contains post.id %}heart-full.svg{% else %}heart-empty.svg{% endif %}"
+                  alt="Like button"
+                  width="48"
+                  height="48"
+                >
+              </button>
+              <a href="/{{ post.slug }}" class="read-more">read more</a>
+            </div>
+          </section>
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}
+    <section class="favorites-empty">
+      <p class="empty-text">You haven't saved any favorites yet.</p>
+      <a href="/blog" class="submit blog">Go to blog</a>
+    </section>
+  {% endif %}
 </main>
