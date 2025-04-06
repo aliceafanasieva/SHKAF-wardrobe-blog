@@ -194,7 +194,6 @@ app.get('/:slug', async (req, res) => {
   }
 })
 
-
 app.set('port', process.env.PORT || 2001)
 app.listen(app.get('port'), () => {
   console.log(`Server started on http://localhost:${app.get('port')}`)
