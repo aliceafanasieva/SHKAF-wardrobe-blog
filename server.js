@@ -67,7 +67,7 @@ app.get('/landing', (req, res) => {
   })
 })
 
-// Blogpagina
+// Blogpagina GET
 app.get('/blog', async (req, res) => {
   try {
     const blogFile = await fsPromises.readFile('./data/data.json', 'utf-8')

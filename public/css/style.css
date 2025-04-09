@@ -132,7 +132,7 @@ body.blog-page .navigation-logo {
   background: none;
   border: none;
   font-size: 1rem;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
   z-index: 1001;
 }
@@ -444,29 +444,26 @@ body.blog-page .navigation-logo {
 /* ========== MEDIA QUERIES ========== */
 @media (min-width: 700px) {
   .navigation-menu {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 6rem;
-    padding-right: 3rem;
-  }
-
-  .mobile-menu-toggle {
-    display: none;
-  }
-
-  .navigation-menu {
-    position: static;
+    position: relative;
     height: auto;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     opacity: 1;
     gap: 6rem;
     padding-right: 3rem;
+    padding-left: 3rem;
     pointer-events: auto;
     transform: none;
     transition: none;
+  }
+
+  .navigation-menu li {
+    white-space: nowrap;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
   }
 
   .hero-title {
@@ -491,7 +488,6 @@ body.blog-page .navigation-logo {
     flex-direction: column;
     justify-content: center;
   }
-  
 
   .blog-posts {
     grid-template-columns: repeat(2, 1fr);
@@ -503,7 +499,7 @@ body.blog-page .navigation-logo {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding: 0 11rem;
+    padding: 0 9rem;
     gap: 1rem;
     font-size: 14px;
     font-weight: bold;
@@ -521,16 +517,10 @@ body.blog-page .navigation-logo {
 @media (min-width: 1024px) {
   .blog-posts {
     grid-template-columns: repeat(3, 1fr);
-    padding: 2rem 6rem;
+    padding: 2rem 8rem;
   }
 
   .grid-container {
-    padding: 0 6rem;
-  }
-
-  .blog-categories {
-    flex-direction: row;
-    justify-content: space-between;
     padding: 0 6rem;
   }
 }
