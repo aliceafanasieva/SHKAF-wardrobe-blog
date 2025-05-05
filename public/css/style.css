@@ -220,11 +220,19 @@ body.blog-page .nav-logo a {
 }
 
 .btn-theme-change:hover {
-  background-color: #bababa;
+  background-color: #4c4c4c;
 }
 
-.btn-theme-change:active {
-  background-color: #7c7c7c;
+.btn-theme-change.active:hover {
+  background-color: #d9d9d9;
+}
+
+.btn-theme-change:active, .btn-theme-change.active:active {
+  background-color: #ff3eb2;
+}
+
+.btn-theme-change.active {
+  background-color: #ffffff
 }
 
 /* ========== LOGIN PAGE ========== */
