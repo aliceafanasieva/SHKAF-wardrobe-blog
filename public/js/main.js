@@ -1,5 +1,6 @@
 import { setupFavorites } from './favorites.js';
 import { setupCategoryFilter } from './filter.js';
+import { setupThemeChange } from './theme.js';
 import './welcome.js'; 
 
 
@@ -15,4 +16,5 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   setupFavorites();
   setupCategoryFilter();
+  setupThemeChange();
 });

@@ -183,7 +183,8 @@ app.get('/:slug', async (req, res) => {
       res.render('partials/layout', {
         title: blog.title,
         includeContent: 'partials/article-content',
-        blog: blog
+        blog: blog,
+        bodyClass: 'blog-page'
       })
     } else {
       res.status(404).send('Blog not found')
