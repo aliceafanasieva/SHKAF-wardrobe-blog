@@ -18,14 +18,18 @@
 :root {
   --regular-font: "Inter";
   --bold-font: "Inter-Bold";
-  --color-bg: #fff;
-  --color-fg: #000;
+  --body-color: #ffffff;
+  --text-color: #090909;
+  --nav-color: #ffffff;
+  --side-nav:  #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #fff;
-    --color-fg: #000;
+    --body-color: #090909;
+    --nav-color: #090909;
+    --side-nav:  #090909;
+    --text-color: #ffffff;
   }
 }
 
@@ -42,8 +46,16 @@ html {
 
 body {
   width: 100%;
-  background-color: var(--color-bg);
-  color: var(--color-fg);
+  background-color: var(--body-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+body.dark {
+  --body-color: #090909;
+  --nav-color: #090909;
+  --side-nav:  #090909;
+  --text-color: #ffffff;
 }
 
 /* ========== TYPOGRAPHY ========== */
@@ -65,7 +77,7 @@ p {
 
 a {
   text-decoration: none;
-  color: var(--color-fg);
+  color: var(--text-color);
 }
 
 ul {
@@ -115,7 +127,6 @@ nav {
   left: 0;
   width: 100%;
   height: 6rem;
-  background-color: var(--color-bg);
 }
 
 nav h1 {
@@ -133,6 +144,8 @@ nav .nav-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: var(--nav-color);
+  transition: all 0.3s ease;
 }
 
 .nav-links {
@@ -141,7 +154,6 @@ nav .nav-bar {
   right: 0;
   height: 100vh;
   width: 100%;
-  background-color: var(--color-bg);
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -207,16 +219,18 @@ body.blog-page .nav-logo a {
 }
 
 /* ========== THEME BUTTON ========== */
+
 .btn-theme-change {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background-color: var(--color-fg);
+  background-color: var(--text-color);
   border: none;
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-theme-change:hover {
@@ -253,7 +267,7 @@ body.blog-page .nav-logo a {
 
 .login-form input {
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--text-color);
   width: 100%;
   padding: 0.25rem;
   font-size: 14px;
@@ -262,13 +276,13 @@ body.blog-page .nav-logo a {
 
 .login-form input:focus {
   outline: none;
-  border: 1px solid var(--color-fg);
+  border: 1px solid var(--text-color);
 }
 
 /* ========== BUTTONS ========== */
 .submit {
-  background-color: black;
-  color: white;
+  background-color: var(--text-color);
+  color: var(--body-color);
   padding: 0.75rem 2rem;
   border: none;
   cursor: pointer;
@@ -347,6 +361,7 @@ body.blog-page .nav-logo a {
   gap: 2rem;
   padding: 2rem;
   margin-top: 3rem;
+  transition: all 0.3s ease;
 }
 
 .blog-post-card {
@@ -417,13 +432,16 @@ body.blog-page .nav-logo a {
 .categories-list {
   flex-direction: column;
   align-items: flex-start;
+  color: var(--text-color);
   gap: 0.5rem;
   margin-top: 1rem;
   font-size: 12px;
+  transition: all 0.3s ease;
 }
 
 .categories-list li {
   position: relative;
+  color: var(--text-color);
 }
 
 .categories-list button {
@@ -431,6 +449,7 @@ body.blog-page .nav-logo a {
   border: none;
   cursor: pointer;
   text-transform: uppercase;
+  color: var(--text-color);
 }
 
 .categories-list button.active::after {
@@ -439,7 +458,7 @@ body.blog-page .nav-logo a {
   margin: auto;
   width: 100%;
   height: 1px;
-  background-color: black;
+  background-color: var(--text-color);
 }
 
 /* ========== FAVORITES PAGE ========== */
