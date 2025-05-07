@@ -24,12 +24,9 @@
 
         <div class="post-content-right">
           <button class="favorite-btn" data-id="{{ post.id }}">
-            <img
-              src="/assets/icons/{% if favoriteIds contains post.id %}heart-full.svg{% else %}heart-empty.svg{% endif %}"
-              alt="Like button"
-              width="48"
-              height="48"
-            >
+            <svg width="24" height="24" class="heart-icon">
+              <use href="#{% if favoriteIds contains post.id %}icon-heart-full{% else %}icon-heart-empty{% endif %}"></use>
+            </svg>
           </button>
           <a href="/{{ post.slug }}" class="read-more">read more</a>
         </div>

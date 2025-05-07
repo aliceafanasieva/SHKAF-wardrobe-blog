@@ -409,6 +409,13 @@ body.blog-page .nav-logo a {
   width: 1.5rem;
 }
 
+.heart-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--text-color); 
+  transition: color 0.3s ease;
+}
+
 .read-more {
   font-size: 16px;
 }
