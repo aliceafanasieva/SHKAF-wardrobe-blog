@@ -6,14 +6,18 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="shortcut icon" href="/assets/logo/logo_red.svg">
-    <script src="/js/script.js" defer></script>
+    <script type="module" src="/js/main.js" defer></script>
   </head>
   <body class="{{ bodyClass }}">
     <header>
       <nav>
-        <div class="navigation-logo" style="visibility: visible;">
-          <img src="/assets/logo/logo_red.svg" alt="Logo" class="logo" width="48" height="48">
-          <h1>SHKAF</h1>
+        <div class="nav-bar">
+          <div class="nav-logo">
+            <a href="/" style="visibility: visible;">
+              <img src="/assets/logo/logo_red.svg" alt="Logo" class="logo" width="48" height="48">
+              <h1>SHKAF</h1>
+            </a>
+          </div>
         </div>
       </nav>
     </header>
