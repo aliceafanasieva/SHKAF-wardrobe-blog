@@ -2,6 +2,19 @@ export function setupThemeChange() {
   const body = document.querySelector("body");
   const modeToggle = document.querySelector(".btn-theme-change");
 
+
+  const updateLogos = () => {
+    const isDark = body.classList.contains("dark");
+    const logoSrc = isDark 
+      ? "/assets/logo/logo_pink.svg" 
+      : "/assets/logo/logo_red.svg";
+
+    document.querySelectorAll("[data-theme-logo]").forEach(img => {
+      img.src = logoSrc;
+    });
+  };
+
+  updateLogos();
   
   if (!modeToggle) return;
 
@@ -12,6 +25,7 @@ export function setupThemeChange() {
     document.documentElement.classList.add("dark");
     body.classList.add("dark");
     modeToggle.classList.add("active");
+    updateLogos();
   }
 
 
@@ -20,6 +34,8 @@ export function setupThemeChange() {
     body.classList.toggle("dark");
     modeToggle.classList.toggle("active");
 
+    updateLogos();
     localStorage.setItem("theme", isDark ? "dark" : "light");
+
   });
 }

@@ -42,7 +42,6 @@
 
 html {
   font-family: var(--regular-font);
-  view-transition-name: default;
 }
 
 body {
