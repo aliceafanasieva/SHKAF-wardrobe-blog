@@ -355,6 +355,18 @@ body.blog-page .nav-logo a {
   object-fit: cover;
 }
 
+.cross-container {
+  margin: 6rem auto;
+  justify-content: center;
+  display: flex;
+  gap: 3rem;
+}
+
+.cross-img {
+  width: auto;
+  height: 9rem;
+}
+
 /* ========== BLOG PAGE ========== */
 .blog-posts {
   display: grid;
