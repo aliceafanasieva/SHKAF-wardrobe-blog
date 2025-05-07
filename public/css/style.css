@@ -268,6 +268,7 @@ body.blog-page .nav-logo a {
 .login-form input {
   border: none;
   border-bottom: 1px solid var(--text-color);
+  color: var(--text-color);
   width: 100%;
   padding: 0.25rem;
   font-size: 14px;
@@ -306,6 +307,7 @@ body.blog-page .nav-logo a {
 }
 
 /* ========== LANDING PAGE ========== */
+
 .landing-page {
   padding: 2rem;
 }
@@ -326,6 +328,7 @@ body.blog-page .nav-logo a {
     max-width: 15rem;
     min-width: 5rem;
     height: auto;
+    transition: all 0.3s ease;
 }
 
 .hero-title {
@@ -358,15 +361,17 @@ body.blog-page .nav-logo a {
   margin: 6rem auto;
   justify-content: center;
   display: flex;
-  gap: 3rem;
+  gap: clamp(1rem, 10vw, 3rem);
 }
 
 .cross-img {
-  width: auto;
-  height: 9rem;
+  width: clamp(3rem, 20vw, 7rem);
+  height: auto;
+  transition: all 0.3s ease;
 }
 
 /* ========== BLOG PAGE ========== */
+
 .blog-posts {
   display: grid;
   grid-template-columns: 1fr;
@@ -433,6 +438,7 @@ body.blog-page .nav-logo a {
 }
 
 /* ========== FILTER / CATEGORIES ========== */
+
 .categories-container {
   display: flex;
   align-items: center;
@@ -481,6 +487,7 @@ body.blog-page .nav-logo a {
 }
 
 /* ========== FAVORITES PAGE ========== */
+
 .favorites-title {
   margin: 2rem;
 }
@@ -534,7 +541,10 @@ body.blog-page .nav-logo a {
 
 /* ========== MEDIA QUERIES ========== */
 @media (min-width: 700px) {
+  /* NAV MENU */
 
+
+  /* LANDING */
   .hero-title {
     font-size: clamp(5rem, 15.5vw, 10rem);
   }
@@ -558,6 +568,12 @@ body.blog-page .nav-logo a {
     justify-content: center;
   }
 
+  .cross-img {
+    width: clamp(3rem, 20vw, 9rem);
+    height: auto;
+  }
+
+  /* BLOG */
   .blog-posts {
     grid-template-columns: repeat(2, 1fr);
     padding: 2rem;
