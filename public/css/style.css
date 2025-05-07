@@ -19,16 +19,16 @@
   --regular-font: "Inter";
   --bold-font: "Inter-Bold";
   --body-color: #ffffff;
-  --text-color: #090909;
+  --text-color: #000000;
   --nav-color: #ffffff;
   --side-nav:  #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --body-color: #090909;
-    --nav-color: #090909;
-    --side-nav:  #090909;
+    --body-color: #121212;
+    --nav-color: #121212;
+    --side-nav:  #121212;
     --text-color: #ffffff;
   }
 }
@@ -52,9 +52,9 @@ body {
 }
 
 body.dark {
-  --body-color: #090909;
-  --nav-color: #090909;
-  --side-nav:  #090909;
+  --body-color: #121212;
+  --nav-color: #121212;
+  --side-nav:  #121212;
   --text-color: #ffffff;
 }
 
