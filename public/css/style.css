@@ -136,17 +136,15 @@ nav h1 {
 }
 
 .nav-bar {
-  position: relative;
-  height: 100%;
+  position: fixed;
+  height: auto;
   width: 100%;
-  margin: 0 auto;
-  max-width: 1380px;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  left: 0; 
+  top: 0;
+  padding: 1rem 2rem;
   background-color: var(--nav-color);
   transition: all 0.3s ease;
+  z-index: 1002;
 }
 
 .nav-logo a {
@@ -159,29 +157,45 @@ body.blog-page .nav-logo a {
   visibility: visible;
 }
 
-
 .nav-links {
   position: fixed;
+  top: 0;
+  right: 0;
   display: flex;
   height: 100vh;
   width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: var(--nav-color);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateX(100%);
+  visibility: hidden;
+  opacity: 0;
+  z-index: 999;
+}
+
+.nav-links.open {
+  transform: translateX(0%);
+  visibility: visible;
+  opacity: 1;
 }
 
 .nav-links li a {
-  display: flex;
+  display: block; 
   align-items: center;
   height: 100%;
+  margin-top: 1rem;
 }
 
 .mobile-menu-toggle {
-  display: block;
+  position: fixed;
+  top: 2.5rem;
+  right: 2.5rem;
   background: none;
   border: none;
   font-size: 1rem;
-  text-decoration: none;
+  text-decoration: underline;
   cursor: pointer;
   z-index: 1001;
 }
@@ -190,15 +204,19 @@ body.blog-page .nav-logo a {
   /* NAV MENU */
 
   .nav-bar {
-
-  }
-
-  .menu {
-
+    position: relative;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 1380px;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .nav-links {
     position: relative;
+    display: flex;
     height: auto;
     flex-direction: row;
     justify-content: flex-end;
@@ -206,6 +224,7 @@ body.blog-page .nav-logo a {
     opacity: 1;
     gap: clamp(1rem, 7vw, 10rem);
     padding-left: 3rem;
+    padding-top: 0;
     pointer-events: auto;
     transform: none;
     transition: none;
@@ -213,6 +232,8 @@ body.blog-page .nav-logo a {
   }
 
   .nav-links li {
+    margin-top: 0;
+    display: flex;
     white-space: nowrap;
   }
 
@@ -233,6 +254,7 @@ body.blog-page .nav-logo a {
   height: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 1003;
 }
 
 .btn-theme-change:hover {
