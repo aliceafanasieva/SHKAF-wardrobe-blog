@@ -10,6 +10,9 @@ export function setupCategoryFilter() {
       filterButtons.forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
 
+      const defaultCategory = document.querySelector(".categories-list button.active")?.dataset.filter || "all";
+
+
       // Filteren van posts
       blogPosts.forEach(post => {
         const category = post.dataset.category;
