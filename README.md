@@ -1,7 +1,7 @@
 # SHKAF — Wardrobe Blog
 
 **SHKAF** is a fashion blog where a user can explore inspirational selected fashion content from runway shows and archives and save favorite pieces into their personal favorites.<br>
-The website is built using **Node.js**, **Express**, and the **Liquid** templating engine. All data is dynamically loaded from JSON files.
+The website is built using **Node.js**, **Express**, and the **Liquid** templating engine. All data is dynamically loaded from JSON files. Check out the website on this link (it can take up to 10 seconds to load): https://shkaf.onrender.com. 
 
 <img width="1167" alt="image" src="https://github.com/user-attachments/assets/df0d51bc-fe6d-47b5-9fb9-a3561cac39f9" />
 
