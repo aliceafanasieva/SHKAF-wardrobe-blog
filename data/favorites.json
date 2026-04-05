@@ -9,6 +9,15 @@
     "content": "Maison Margiela Spring 2006 Ready-To-Wear."
   },
   {
+    "id": "7",
+    "title": "Martin Margiela bag 2002",
+    "slug": "mm-bag-2002",
+    "image-1": "/assets/images/post7_1.jpg",
+    "image-2": "",
+    "category": "accessories",
+    "content": "Winter 2002, Maison Martin Margiela - white, soft hand bag. Photography: Martin Margiela."
+  },
+  {
     "id": "9",
     "title": "Ann Demeulemeester SS98”",
     "slug": "ann-demeulemeester-ss98",

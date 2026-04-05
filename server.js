@@ -169,31 +169,54 @@ app.post('/login', async function (req, res) {
       });
     }
 
-// Blogpagina GET
-app.get('/blog', async (req, res) => {
-  try {
-    const blogFile = await fsPromises.readFile('./data/data.json', 'utf-8')
-    const blogData = JSON.parse(blogFile)
-    const reversedPosts = [...blogData.data].reverse()
-    const favoritesPath = './data/favorites.json'
-    let favorites = []
-    if (fs.existsSync(favoritesPath)) {
-      favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
-    }
-    const favoriteIds = favorites.map(f => f.id)
+    res.redirect(`/blog?user=${encodeURIComponent(existingUser.email)}`);
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).render('login', {
+      title: 'Login',
+      errorMessage: 'Something went wrong while logging in.'
+    });
+  }
+});
 
-    res.render('partials/layout', {
+app.get('/landing', function (req, res) {
+  res.redirect('/');
+});
+
+app.get('/blog', async function (req, res) {
+  try {
+    const userEmail = getUserEmail(req);
+
+    if (!userEmail) {
+      return res.redirect('/login');
+    }
+
+    const blogFile = await readJson(BLOG_PATH, { data: [] });
+    const users = await readJson(USERS_PATH, []);
+
+    const currentUser = users.find(function (user) {
+      return user.email === userEmail;
+    });
+
+    if (!currentUser) {
+      return res.redirect('/login');
+    }
+
+    const reversedPosts = [...blogFile.data].reverse();
+
+    res.render('partials/layout', createLayoutData({
       title: 'Blog',
       includeContent: 'partials/blog-content',
       posts: reversedPosts,
-      favoriteIds,
-      bodyClass: 'blog-page'
-    })
-  } catch (err) {
-    console.error('Fout bij laden blog data:', err)
-    res.status(500).send('Interne serverfout bij laden blog')
+      favoriteIds: currentUser.favorites,
+      bodyClass: 'blog-page',
+      userEmail: currentUser.email
+    }));
+  } catch (error) {
+    console.error('Error loading blog:', error);
+    res.status(500).send('Internal server error while loading the blog.');
   }
-})
+});
 
 // Favorites pagina GET
 app.get('/favorites', async (req, res) => {

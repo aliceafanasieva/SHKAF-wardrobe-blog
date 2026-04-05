@@ -1,25 +1,51 @@
 export function setupFavorites() {
-  const buttons = document.querySelectorAll(".favorite-btn");
+  const buttons = document.querySelectorAll('.favorite-btn');
+  const userEmail = new URLSearchParams(window.location.search).get('user');
 
-  buttons.forEach(btn => {
-    btn.addEventListener("click", async function () {
+  if (!userEmail) {
+    return;
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', async function () {
       const postId = this.dataset.id;
-      const icon = this.querySelector("use");
-      const isFull = icon.getAttribute("href").includes("icon-heart-full");
+      const iconUse = this.querySelector('use');
+
+      if (!iconUse) {
+        return;
+      }
+
+      const currentIcon = iconUse.getAttribute('href');
+      const isFull = currentIcon === '#icon-heart-full';
+      const url = isFull ? '/favorites/remove' : '/favorites';
 
       try {
-        const url = isFull ? "/favorites/remove" : "/favorites";
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: postId })
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: postId,
+            userEmail: userEmail
+          })
         });
 
-        if (res.ok) {
-          icon.setAttribute("href", isFull ? "#icon-heart-empty" : "#icon-heart-full");
+        if (!response.ok) {
+          const errorData = await response.json().catch(function () {
+            return {};
+          });
+
+          console.error('Favorite request failed:', errorData);
+          return;
         }
-      } catch (err) {
-        console.error("Fout bij favoriet toevoegen/verwijderen:", err);
+
+        iconUse.setAttribute(
+          'href',
+          isFull ? '#icon-heart-empty' : '#icon-heart-full'
+        );
+      } catch (error) {
+        console.error('Error while toggling favorite:', error);
       }
     });
   });
