@@ -253,57 +253,68 @@ app.get('/favorites', async function (req, res) {
   }
 });
 
-// Favorites pagina POST 
-app.post('/favorites', async (req, res) => {
+app.post('/favorites', async function (req, res) {
   try {
-    const favoritesPath = './data/favorites.json'
-    const { id } = req.body
+    const id = req.body.id;
+    const userEmail = req.body.userEmail;
 
-    const blogFile = await fsPromises.readFile('./data/data.json', 'utf-8')
-    const blogData = JSON.parse(blogFile)
-    const post = blogData.data.find(p => p.id === id)
-
-    if (!post) return res.status(404).json({ error: 'Post not found' })
-
-    let favorites = []
-    if (fs.existsSync(favoritesPath)) {
-      favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
-    }
-    
-    const alreadyExists = favorites.some(f => f.id === id)
-    if (!alreadyExists) {
-      favorites.push(post)
-      await fsPromises.writeFile(favoritesPath, JSON.stringify(favorites, null, 2))
+    if (!id || !userEmail) {
+      return res.status(400).json({ error: 'Missing post id or user email.' });
     }
 
-    res.status(200).json({ message: 'Toegevoegd aan favorieten' })
-  } catch (err) {
-    console.error("Fout bij opslaan favoriet:", err)
-    res.status(500).json({ error: 'Serverfout' })
+    const blogFile = await readJson(BLOG_PATH, { data: [] });
+    const users = await readJson(USERS_PATH, []);
+
+    const currentUser = users.find(function (user) {
+      return user.email === userEmail;
+    });
+
+    if (!currentUser) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const postExists = blogFile.data.some(function (post) {
+      return post.id === id;
+    });
+
+    if (!postExists) {
+      return res.status(404).json({ error: 'Post not found.' });
+    }
+
+    if (!currentUser.favorites.includes(id)) {
+      currentUser.favorites.push(id);
+      await writeJson(USERS_PATH, users);
+    }
+
+    res.status(200).json({ message: 'Added to favorites.' });
+  } catch (error) {
+    console.error('Error adding favorite:', error);
+    res.status(500).json({ error: 'Server error.' });
   }
-})
+});
 
-app.post('/favorites/remove', async (req, res) => {
+app.post('/favorites/remove', async function (req, res) {
   try {
-    const { id } = req.body
-    const favoritesPath = './data/favorites.json'
+    const id = req.body.id;
+    const userEmail = req.body.userEmail;
 
-    if (!fs.existsSync(favoritesPath)) {
-      return res.status(404).json({ error: 'Favorietenlijst bestaat niet' })
+    if (!id || !userEmail) {
+      return res.status(400).json({ error: 'Missing post id or user email.' });
     }
 
-    const favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
-    const updatedFavorites = favorites.filter(post => post.id !== id)
+    const users = await readJson(USERS_PATH, []);
 
-    await fsPromises.writeFile(favoritesPath, JSON.stringify(updatedFavorites, null, 2))
+    const currentUser = users.find(function (user) {
+      return user.email === userEmail;
+    });
 
-    res.status(200).json({ message: 'Verwijderd uit favorieten' })
-  } catch (err) {
-    console.error("Fout bij verwijderen favoriet:", err)
-    res.status(500).json({ error: 'Serverfout' })
-  }
-})
+    if (!currentUser) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
 
+    currentUser.favorites = currentUser.favorites.filter(function (favoriteId) {
+      return favoriteId !== id;
+    });
 
 // Blogpost GET
 app.get('/:slug', async (req, res) => {
