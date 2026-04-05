@@ -1,71 +1,173 @@
-const express = require('express')
-const { Liquid } = require('liquidjs')
-const fs = require('fs')
-const path = require('path')
-const bodyParser = require('body-parser')
-const fsPromises = fs.promises
-const app = express()
+const express = require('express');
+const { Liquid } = require('liquidjs');
+const fs = require('fs');
+const path = require('path');
+const bodyParser = require('body-parser');
 
-// Liquid setup
+const fsPromises = fs.promises;
+const app = express();
+const PORT = 3000;
+
 const engine = new Liquid({
   root: path.resolve(__dirname, 'views'),
   extname: '.liquid'
-})
-app.engine('liquid', engine.express()) 
-app.set('views', './views')
-app.set('view engine', 'liquid')
+});
 
-// Static bestanden
-app.use(express.static('public'))
-app.use('/assets', express.static('assets'))
-app.use('/images', express.static('assets/images'))
+app.engine('liquid', engine.express());
+app.set('views', './views');
+app.set('view engine', 'liquid');
 
-// Body parser
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(express.static('public'));
+app.use('/assets', express.static('assets'));
+app.use('/images', express.static('assets/images'));
 
-// JSON blog data
-const blogData = JSON.parse(fs.readFileSync('./data/data.json', 'utf-8'))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// === Routes ===
+const BLOG_PATH = path.resolve(__dirname, 'data/data.json');
+const USERS_PATH = path.resolve(__dirname, 'data/users.json');
 
-// Login pagina GET
-app.get('/', (req, res) => {
-  res.render('login', { title: 'Login' })
-})
-
-//Login pagina POST
-app.post('/login', async (req, res) => {
+async function readJson(filePath, fallbackValue) {
   try {
-    const { name, email } = req.body
-    const userData = { name, email }
-    const usersPath = './data/users.json'
-
-    let users = []
-    if (fs.existsSync(usersPath)) {
-      const userFile = await fsPromises.readFile(usersPath, 'utf-8')
-      users = JSON.parse(userFile)
+    if (!fs.existsSync(filePath)) {
+      await fsPromises.writeFile(filePath, JSON.stringify(fallbackValue, null, 2));
+      return fallbackValue;
     }
 
-    users.push(userData)
-    await fsPromises.writeFile(usersPath, JSON.stringify(users, null, 2))
+    const fileContent = await fsPromises.readFile(filePath, 'utf-8');
 
-    res.redirect(`/landing?name=${encodeURIComponent(name)}`)
-  } catch (err) {
-    console.error('Fout bij opslaan gebruiker:', err)
-    res.status(500).send('Interne serverfout bij inloggen')
+    if (!fileContent.trim()) {
+      return fallbackValue;
+    }
+
+    return JSON.parse(fileContent);
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error);
+    return fallbackValue;
   }
-})
+}
 
-// Landingspagina GET
-app.get('/landing', (req, res) => {
-  const name = req.query.name || 'guest'
-  res.render('partials/layout', {
+async function writeJson(filePath, data) {
+  await fsPromises.writeFile(filePath, JSON.stringify(data, null, 2));
+}
+
+function getUserEmail(req) {
+  return req.query.user || req.body.userEmail || '';
+}
+
+function getFavoritePosts(allPosts, favoriteIds) {
+  return allPosts.filter(function (post) {
+    return favoriteIds.includes(post.id);
+  });
+}
+
+function createLayoutData(options) {
+  return {
+    title: options.title,
+    includeContent: options.includeContent,
+    bodyClass: options.bodyClass || '',
+    userEmail: options.userEmail || '',
+    posts: options.posts || [],
+    favoriteIds: options.favoriteIds || [],
+    blog: options.blog || null,
+    errorMessage: options.errorMessage || '',
+    successMessage: options.successMessage || ''
+  };
+}
+
+app.get('/', function (req, res) {
+  res.render('partials/layout', createLayoutData({
     title: 'Landing',
     includeContent: 'partials/landing-content',
-    name: name
-  })
-})
+    bodyClass: 'landing-page',
+    userEmail: ''
+  }));
+});
+
+app.get('/register', function (req, res) {
+  res.render('register', {
+    title: 'Create account',
+    errorMessage: ''
+  });
+});
+
+app.post('/register', async function (req, res) {
+  try {
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+
+    if (!name || !email || !password) {
+      return res.status(400).render('register', {
+        title: 'Create account',
+        errorMessage: 'Please fill in all fields.'
+      });
+    }
+
+    const users = await readJson(USERS_PATH, []);
+
+    const existingUser = users.find(function (user) {
+      return user.email.toLowerCase() === email.toLowerCase();
+    });
+
+    if (existingUser) {
+      return res.status(409).render('register', {
+        title: 'Create account',
+        errorMessage: 'An account with this email already exists.'
+      });
+    }
+
+    const newUser = {
+      name: name,
+      email: email,
+      password: password,
+      favorites: []
+    };
+
+    users.push(newUser);
+    await writeJson(USERS_PATH, users);
+
+    res.redirect(`/blog?user=${encodeURIComponent(email)}`);
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.status(500).render('register', {
+      title: 'Create account',
+      errorMessage: 'Something went wrong while creating your account.'
+    });
+  }
+});
+
+app.get('/login', function (req, res) {
+  res.render('login', {
+    title: 'Login',
+    errorMessage: ''
+  });
+});
+
+app.post('/login', async function (req, res) {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    if (!email || !password) {
+      return res.status(400).render('login', {
+        title: 'Login',
+        errorMessage: 'Please enter both email and password.'
+      });
+    }
+
+    const users = await readJson(USERS_PATH, []);
+
+    const existingUser = users.find(function (user) {
+      return user.email.toLowerCase() === email.toLowerCase();
+    });
+
+    if (!existingUser || existingUser.password !== password) {
+      return res.status(401).render('login', {
+        title: 'Login',
+        errorMessage: 'Email or password is incorrect.'
+      });
+    }
 
 // Blogpagina GET
 app.get('/blog', async (req, res) => {
@@ -193,9 +295,8 @@ app.get('/:slug', async (req, res) => {
     console.error('Fout bij laden blogpost:', err)
     res.status(500).send('Interne serverfout bij laden post')
   }
-})
+});
 
-app.set('port', process.env.PORT || 2001)
-app.listen(app.get('port'), () => {
-  console.log(`Server started on http://localhost:${app.get('port')}`)
-})
+app.listen(PORT, function () {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
