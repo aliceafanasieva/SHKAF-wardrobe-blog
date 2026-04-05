@@ -1,11 +1,14 @@
-<main class="page-content">
+<main class="page-content favorites">
+  <a class="go-back favorites" href="/blog?user={{ userEmail }}" class="go-back">&larr; go back</a>
   <h1 class="favorites-title">Your favorites</h1>
 
   {% if posts.size > 0 %}
-    <section class="blog-posts">
+    <section class="blog-posts favorites">
       {% for post in posts %}
         <article class="blog-post-card" data-category="{{ post.category }}">
-          <img class="post-image" src="{{ post['image-1'] }}" alt="{{ post.title }}" width="48" height="48">
+          <a href="/{{ post.slug }}?user={{ userEmail }}">
+            <img class="post-image" src="{{ post['image-1'] }}" alt="{{ post.title }}" width="48" height="48">
+          </a>
 
           <section class="post-content">
             <div class="post-content-left">
@@ -15,14 +18,12 @@
 
             <div class="post-content-right">
               <button class="favorite-btn" data-id="{{ post.id }}">
-                <img
-                  src="/assets/icons/{% if favoriteIds contains post.id %}heart-full.svg{% else %}heart-empty.svg{% endif %}"
-                  alt="Like button"
-                  width="48"
-                  height="48"
-                >
+                <svg width="24" height="24" class="heart-icon">
+                  <use href="#{% if favoriteIds contains post.id %}icon-heart-full{% else %}icon-heart-empty{% endif %}"></use>
+                </svg>
               </button>
-              <a href="/{{ post.slug }}" class="read-more">read more</a>
+
+              <a href="/{{ post.slug }}?user={{ userEmail }}" class="read-more">read more</a>
             </div>
           </section>
         </article>
@@ -31,7 +32,7 @@
   {% else %}
     <section class="favorites-empty">
       <p class="empty-text">You haven't saved any favorites yet.</p>
-      <a href="/blog" class="submit blog">Go to blog</a>
+      <a href="/blog?user={{ userEmail }}" class="submit blog">Go to blog</a>
     </section>
   {% endif %}
 </main>
