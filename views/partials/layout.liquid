@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="shortcut icon" href="/assets/logo/logo_red.svg">
     <script type="module" src="/js/main.js" defer></script>
   </head>
   <body class="{{ bodyClass }}">
@@ -21,7 +20,7 @@
       <nav>
         <div class="nav-bar">
           <div class="nav-logo">
-            <a href="/blog">
+            <a href="/blog?user={{ userEmail }}">
               <img
                 src="/assets/logo/logo_red.svg"
                 alt="Logo"
@@ -38,13 +37,16 @@
 
           <div class="menu">
             <ul class="nav-links" id="nav-links">
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="/about">About me</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/favorites">Your favorites</a></li>
+              {% if userEmail != blank %}
+                <li><a href="/blog?user={{ userEmail }}">Blog</a></li>
+                <li><a href="/favorites?user={{ userEmail }}">Your favorites</a></li>
+                <li><a href="/">Logout</a></li>
+              {% else %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Create account</a></li>
+              {% endif %}
             </ul>
           </div>
-        </div>
       </nav>
     </header>
 

@@ -316,27 +316,46 @@ app.post('/favorites/remove', async function (req, res) {
       return favoriteId !== id;
     });
 
-// Blogpost GET
-app.get('/:slug', async (req, res) => {
-  try {
-    const blogFile = await fsPromises.readFile('./data/data.json', 'utf-8')
-    const blogData = JSON.parse(blogFile)
-    const slug = req.params.slug
-    const blog = blogData.data.find(post => post.slug === slug)
+    await writeJson(USERS_PATH, users);
 
-    if (blog) {
-      res.render('partials/layout', {
-        title: blog.title,
-        includeContent: 'partials/article-content',
-        blog: blog,
-        bodyClass: 'blog-page'
-      })
-    } else {
-      res.status(404).send('Blog not found')
+    res.status(200).json({ message: 'Removed from favorites.' });
+  } catch (error) {
+    console.error('Error removing favorite:', error);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+app.get('/:slug', async function (req, res) {
+  try {
+    const slug = req.params.slug;
+    const userEmail = getUserEmail(req);
+
+    const blogFile = await readJson(BLOG_PATH, { data: [] });
+    const users = await readJson(USERS_PATH, []);
+
+    const currentUser = users.find(function (user) {
+      return user.email === userEmail;
+    });
+
+    const selectedPost = blogFile.data.find(function (post) {
+      return post.slug === slug;
+    });
+
+    if (!selectedPost) {
+      return res.status(404).send('Post not found.');
     }
-  } catch (err) {
-    console.error('Fout bij laden blogpost:', err)
-    res.status(500).send('Interne serverfout bij laden post')
+
+    res.render('partials/layout', createLayoutData({
+      title: selectedPost.title,
+      includeContent: 'partials/article-content',
+      blog: selectedPost,
+      bodyClass: 'blog-page',
+      userEmail: userEmail,
+      favoriteIds: currentUser ? currentUser.favorites : []
+    }));
+  } catch (error) {
+    console.error('Error loading article:', error);
+    res.status(500).send('Internal server error while loading the article.');
   }
 });
 
