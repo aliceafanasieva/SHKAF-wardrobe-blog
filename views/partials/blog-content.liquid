@@ -1,8 +1,16 @@
-<main class="page-content">
+<main class="page-content blog">
   <section class="categories-container">
     <div class="blog-categories">
+      <p>Categories</p>
       <ul class="categories-list">
-        <li><button data-filter="all" class="active">All</button></li>
+        <li>
+          <button
+            data-filter="all"
+            class="active"
+          >
+            All
+          </button>
+        </li>
         <li><button data-filter="clothes">clothes</button></li>
         <li><button data-filter="runway">runway</button></li>
         <li><button data-filter="outerwear">outerwear</button></li>
@@ -15,7 +23,7 @@
   <section class="blog-posts">
     {% for post in posts %}
       <article class="blog-post-card" data-category="{{ post.category }}">
-        <a href="/{{ post.slug }}">
+        <a href="/{{ post.slug }}?user={{ userEmail }}">
           <img class="post-image" src="{{ post['image-1'] }}" alt="{{ post.title }}" width="48" height="48">
         </a>
 
@@ -31,7 +39,8 @@
                 <use href="#{% if favoriteIds contains post.id %}icon-heart-full{% else %}icon-heart-empty{% endif %}"></use>
               </svg>
             </button>
-            <a href="/{{ post.slug }}" class="read-more">read more</a>
+
+            <a href="/{{ post.slug }}?user={{ userEmail }}" class="read-more">read more</a>
           </div>
         </section>
       </article>

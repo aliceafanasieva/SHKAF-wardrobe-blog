@@ -1,7 +1,6 @@
 import { setupFavorites } from './favorites.js';
 import { setupCategoryFilter } from './filter.js';
 import { setupThemeChange } from './theme.js';
-import './welcome.js'; 
 
 function setupMobileMenu() {
   const toggle = document.querySelector(".mobile-menu-toggle");

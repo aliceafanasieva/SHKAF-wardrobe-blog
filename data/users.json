@@ -1,30 +1,21 @@
 [
   {
     "name": "Alisa",
-    "email": "alice.afanasieva@gmail.com"
+    "email": "alice.afanasieva@gmail.com",
+    "password": "123",
+    "favorites": [
+      "7",
+      "4"
+    ]
   },
   {
-    "name": "Alisa",
-    "email": "alice.afanasieva@gmail.com"
-  },
-  {
-    "name": "Alisa",
-    "email": "alice.afanasieva@gmail.com"
-  },
-  {
-    "name": "Alisa",
-    "email": "alice.afanasieva@gmail.com"
-  },
-  {
-    "name": "Alisa",
-    "email": "alice.afanasieva@gmail.com"
-  },
-  {
-    "name": "Marina",
-    "email": "alice.afanasieva@gmail.com"
-  },
-  {
-    "name": "Marina",
-    "email": "alice.afanasieva@gmail.com"
+    "name": "Max",
+    "email": "maxim@gmail.com",
+    "password": "123",
+    "favorites": [
+      "9",
+      "4",
+      "11"
+    ]
   }
 ]
