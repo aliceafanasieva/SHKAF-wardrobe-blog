@@ -218,31 +218,40 @@ app.get('/blog', async function (req, res) {
   }
 });
 
-// Favorites pagina GET
-app.get('/favorites', async (req, res) => {
+app.get('/favorites', async function (req, res) {
   try {
-    const favFile = await fsPromises.readFile('./data/favorites.json', 'utf-8')
-    const favData = JSON.parse(favFile)
-    const reversedFavorites = [...favData].reverse()
-    const favoritesPath = './data/favorites.json'
-    let favorites = []
-    if (fs.existsSync(favoritesPath)) {
-      favorites = JSON.parse(await fsPromises.readFile(favoritesPath, 'utf-8'))
-    }
-    const favoriteIds = favorites.map(f => f.id)
+    const userEmail = getUserEmail(req);
 
-    res.render('partials/layout', {
+    if (!userEmail) {
+      return res.redirect('/login');
+    }
+
+    const blogFile = await readJson(BLOG_PATH, { data: [] });
+    const users = await readJson(USERS_PATH, []);
+
+    const currentUser = users.find(function (user) {
+      return user.email === userEmail;
+    });
+
+    if (!currentUser) {
+      return res.redirect('/login');
+    }
+
+    const favoritePosts = getFavoritePosts(blogFile.data, currentUser.favorites).reverse();
+
+    res.render('partials/layout', createLayoutData({
       title: 'Favorites',
       includeContent: 'partials/favorites-content',
-      posts: reversedFavorites,
-      favoriteIds,
-      bodyClass: 'blog-page'
-    })
-  } catch (err) {
-    console.error('Fout bij laden favorites:', err)
-    res.status(500).send('Interne serverfout bij laden favorites')
+      posts: favoritePosts,
+      favoriteIds: currentUser.favorites,
+      bodyClass: 'blog-page',
+      userEmail: currentUser.email
+    }));
+  } catch (error) {
+    console.error('Error loading favorites:', error);
+    res.status(500).send('Internal server error while loading favorites.');
   }
-})
+});
 
 // Favorites pagina POST 
 app.post('/favorites', async (req, res) => {
